@@ -9,7 +9,7 @@ export default function Form (props) {
   const [student, setStudent] = useState(props.student || "");
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
 
-  
+
   return (
     <main className="appointment__card appointment__card--create">
       <section className="appointment__card-left">
@@ -19,15 +19,16 @@ export default function Form (props) {
             name="name"
             type="text"
             placeholder="Enter Student Name"
-            /*
-              This must be a controlled component
-              your code goes here1
-            */
+            value={student}
+            onChange={(event) => setStudent(event.target.value)}
+            
           />
         </form>
         <InterviewerList
           interviewers={props.interviewers}
-          /* your code goes here */
+          value={interviewer}
+          onChange={(event) => setInterviewer(event.target.value)}
+          
         />
       </section>
       <section className="appointment__card-right">

@@ -4,7 +4,12 @@ import InterviewerListItem from "components/InterviewerListItem";
 
 export default function InterviewerList(props) {
   let interviewerItems = props.interviewers.map((obj) => 
-    <InterviewerListItem key={obj.id} avatar={obj.avatar} id={obj.id} name={obj.name} setInterviewer={props.setInterviewer} selected={obj.id === props.interviewer}/>
+    <InterviewerListItem 
+      key={obj.id} 
+      avatar={obj.avatar} 
+      name={obj.name} 
+      setInterviewer={() => props.onChange(obj.id)}
+      selected={obj.id === props.value}/>
     );
   
 return (
@@ -14,7 +19,5 @@ return (
       {interviewerItems}
     </ul>
   </section>
-
- 
 )
 };

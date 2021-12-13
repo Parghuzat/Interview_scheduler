@@ -29,3 +29,16 @@ export function getInterview(state, interview){
     interviewer: interviewer
   }
 }
+
+export function getInterviewersForDay(state, day){
+  console.log("here")
+  const currentDay = state.days.filter((ele) => ele.name === day )[0];
+  if(!currentDay){ 
+    return [];
+  }
+  const result = [];
+  for(let key of currentDay.interviewers){
+    result.push(state.interviewers[String(key)]);
+  }
+  return result;
+}

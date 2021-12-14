@@ -40,6 +40,5 @@ export function getInterviewersForDay(state, day){
   for(let key of currentDay.interviewers){
     result.push(state.interviewers[String(key)]);
   }
-  console.log("result :" , result);
   return result;
 }

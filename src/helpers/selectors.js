@@ -31,7 +31,9 @@ export function getInterview(state, interview){
 }
 
 export function getInterviewersForDay(state, day){
-  console.log("here")
+  console.log("here");
+  console.log("state : ", state);
+  console.log("day: ", day);
   const currentDay = state.days.filter((ele) => ele.name === day )[0];
   if(!currentDay){ 
     return [];
@@ -40,5 +42,6 @@ export function getInterviewersForDay(state, day){
   for(let key of currentDay.interviewers){
     result.push(state.interviewers[String(key)]);
   }
+  console.log("result :" , result);
   return result;
 }

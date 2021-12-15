@@ -1,69 +1,23 @@
-import React, {useState, useEffect} from "react";
-import axios from "axios";
+import React from "react";
 import Appointment from "components/Appointment";
 import "components/Application.scss";
 import "components/DayList";
 import DayList from "components/DayList";
 import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "helpers/selectors";
-
+import { useApplicationData } from "hooks/useApplicationData";
 
 
 export default function Application(props) {
-  const [state, setState] = useState({
-    day: "Monday",
-    days: [],
-    appointments: {},
-    interviewers: {}
-  });
-  const setDay = day => setState({ ...state, day });
-  function bookInterview(id, interview) {
-    const apiEndpoint = "/api/appointments/" + id;
-    return axios.put(apiEndpoint, {interview})
-      .then(() => {
-        const appointment = {
-          ...state.appointments[id],
-          interview: { ...interview }
-        };
-        const appointments = {
-          ...state.appointments,
-          [id]: appointment
-        };
-        setState({
-          ...state,
-          appointments
-        });
-      })
-  }
-  function deleteAppointment(id){
-    const apiEndpoint = "/api/appointments/" + id;
-    return axios.delete(apiEndpoint)
-      .then(() => {
-        const appointment = {
-          ...state.appointments[id],
-          interview: null
-        };
-        const appointments = {
-          ...state.appointments,
-          [id]: appointment
-        };
-        setState({
-          ...state,
-          appointments
-        });
-      })
-  }
-  useEffect(() => {
-    Promise.all([
-      axios.get('/api/days'),
-      axios.get('/api/appointments'),
-      axios.get('/api/interviewers')
-    ]).then((all) => {
-      setState(prev => ({...prev, days: all[0].data, appointments: all[1].data, interviewers: all[2].data})); 
-    });
-  }, []);
+  const {
+    state,
+    setDay,
+    bookInterview,
+    deleteAppointment
+  } = useApplicationData();
+
   const interviewers = getInterviewersForDay(state, state.day);
-  const dailyAppointments = getAppointmentsForDay(state, state.day);
-  const schedule = dailyAppointments.map((appointment) => {
+
+  const schedule = getAppointmentsForDay(state, state.day).map((appointment) => {
     const interview = getInterview(state, appointment.interview);
     return (
       <Appointment

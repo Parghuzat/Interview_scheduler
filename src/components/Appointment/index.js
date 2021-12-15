@@ -23,11 +23,11 @@ export default function Appointment (props) {
     props.interview ? SHOW : EMPTY
   );
   function save(name, interviewer) {
+    transition(SAVING);
     if(!interviewer){
-      transition(SAVING_ERR);
+      transition(SAVING_ERR, true);
       return;
     }
-    transition(SAVING);
     const interview = {
       student: name,
       interviewer
@@ -36,7 +36,7 @@ export default function Appointment (props) {
       .then(() => {
         transition(SHOW);
       }).catch(() => {
-        transition(SAVING_ERR);
+        transition(SAVING_ERR, true);
       });
   }
 
@@ -45,13 +45,13 @@ export default function Appointment (props) {
   }
 
   function confirmDelete(){
-    transition(DELETING);
+    transition(DELETING, true);
     props.deleteAppointment(props.id)
     .then(() => {
       transition(EMPTY);
     })
     .catch(() => {
-      transition(DELETING_ERR);
+      transition(DELETING_ERR, true);
     });
   }  
 

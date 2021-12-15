@@ -7,6 +7,7 @@ import useVisualMode from "hooks/useVisualMode";
 import Form from "./Form";
 import Status from './Status';
 import Confirm from './Confirm';
+import { tsPropertySignature } from '@babel/types';
 
 
 export default function Appointment (props) {
@@ -16,6 +17,7 @@ export default function Appointment (props) {
   const SAVING = "SAVING";
   const CONFIRM = "CONFIRM";
   const DELETING = "DELETING";
+  const EDIT = "EDIT";
   const { mode, transition, back, } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
@@ -42,6 +44,8 @@ export default function Appointment (props) {
       transition(EMPTY);
     });
   }
+
+  // function edit()
   
 
   return (
@@ -52,7 +56,7 @@ export default function Appointment (props) {
       }} />}
       {mode === SHOW && (
         <Show
-          onEdit={props.onEdit} 
+          onEdit={() => { transition(EDIT)}} 
           onDelete={onDelete}
           student={props.interview.student}
           interviewer={props.interview.interviewer}
@@ -70,12 +74,21 @@ export default function Appointment (props) {
       )}
       {mode === CONFIRM && (
         <Confirm 
-          onCancel={() => {transition(SHOW)}}
+          onCancel={() => back()}
           onConfirm={confirmDelete} 
         />
       )}
       {mode === DELETING && (
         <Status message="Deleting" />
+      )}
+      {mode === EDIT && (
+        <Form 
+          onCancel={() => back()}
+          onSave={save}
+          student={props.interview.student}
+          interviewer={props.interview.interviewer.id}
+          interviewers={props.interviewers}
+        />
       )}
     </article>
   );

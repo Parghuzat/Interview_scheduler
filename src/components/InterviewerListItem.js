@@ -8,13 +8,6 @@ export default function InterviewerListItem (props) {
     "interviewers__item :hover": props.hover
     
   });
-  let name = "";
-  if(props.selected){
-    name = props.name;
-  }
-
-
-
   return (
     <li className={interviewer} onClick={props.setInterviewer}>
       <img

@@ -14,7 +14,6 @@ export function getInterview(state, interview){
   if(!interview){
     return null;
   }
-  const result = {};
   let interviewer = null; 
   for(let key in state.interviewers){
     if(state.interviewers[key].id === interview.interviewer){

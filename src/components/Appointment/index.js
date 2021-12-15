@@ -7,8 +7,7 @@ import useVisualMode from "hooks/useVisualMode";
 import Form from "./Form";
 import Status from './Status';
 import Confirm from './Confirm';
-import { tsPropertySignature } from '@babel/types';
-
+import Error from './Error';
 
 export default function Appointment (props) {
   const EMPTY = "EMPTY";
@@ -18,10 +17,16 @@ export default function Appointment (props) {
   const CONFIRM = "CONFIRM";
   const DELETING = "DELETING";
   const EDIT = "EDIT";
+  const SAVING_ERR = "SAVING_ERR";
+  const DELETING_ERR = "DELETING_ERR";
   const { mode, transition, back, } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
   function save(name, interviewer) {
+    if(!interviewer){
+      transition(SAVING_ERR);
+      return;
+    }
     transition(SAVING);
     const interview = {
       student: name,
@@ -30,6 +35,8 @@ export default function Appointment (props) {
     props.bookInterview(props.id, interview)
       .then(() => {
         transition(SHOW);
+      }).catch(() => {
+        transition(SAVING_ERR);
       });
   }
 
@@ -42,11 +49,11 @@ export default function Appointment (props) {
     props.deleteAppointment(props.id)
     .then(() => {
       transition(EMPTY);
+    })
+    .catch(() => {
+      transition(DELETING_ERR);
     });
-  }
-
-  // function edit()
-  
+  }  
 
   return (
     <article className="appointment">
@@ -88,6 +95,18 @@ export default function Appointment (props) {
           student={props.interview.student}
           interviewer={props.interview.interviewer.id}
           interviewers={props.interviewers}
+        />
+      )}
+      {mode === SAVING_ERR && (
+        <Error 
+          message="Could not save appointment."
+          onClose={() => back()}
+        />
+      )}
+      {mode === DELETING_ERR && (
+        <Error 
+          message="Could not delete appointment."
+          onClose={() => back()}
         />
       )}
     </article>

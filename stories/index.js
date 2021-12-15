@@ -167,7 +167,7 @@ storiesOf("Appointment", module)
     <Confirm 
       onConfirm={action("onConfirm")}
       onCancel={action("onCancel")} />)
-  .add("Status", () => <Status onStatus={action("onStatus")} /> )
+  .add("Status", () => <Status onStatus={action("onStatus")} message="Deleting"/> )
   .add("Error", () => <Error onClose={action("onClose")} />)
   .add("Create", () => 
     <Form 

@@ -34,6 +34,24 @@ export default function Application(props) {
         });
       })
   }
+  function deleteAppointment(id){
+    const apiEndpoint = "/api/appointments/" + id;
+    return axios.delete(apiEndpoint)
+      .then(() => {
+        const appointment = {
+          ...state.appointments[id],
+          interview: null
+        };
+        const appointments = {
+          ...state.appointments,
+          [id]: appointment
+        };
+        setState({
+          ...state,
+          appointments
+        });
+      })
+  }
   useEffect(() => {
     Promise.all([
       axios.get('/api/days'),
@@ -55,6 +73,7 @@ export default function Application(props) {
         interview={interview}
         interviewers={interviewers}
         bookInterview={bookInterview}
+        deleteAppointment={deleteAppointment}
       />
     );
   });
